@@ -1,66 +1,140 @@
 ---
 name: ucas-presentation-ppt-generator
-description: Generate HTML presentations in University of Chinese Academy of Sciences (UCAS) style. Use when creating academic thesis defenses, course presentations, research progress reports, conference presentations, or any formal academic PPT materials requiring UCAS branding.
 author: severus98
+description: Generate HTML presentations in University of Chinese Academy of Sciences (UCAS) style. Analyzes folder contents to create PPT outlines and incorporates local images. Use when creating academic thesis defenses, course presentations, research progress reports, conference presentations, or any formal academic PPT materials requiring UCAS branding.
 ---
 
 # UCAS Presentation PPT Generator
 
-A professional HTML presentation generator following the University of Chinese Academy of Sciences visual standards. Creates standardized academic PPT materials with official branding elements.
+A professional HTML presentation generator following the University of Chinese Academy of Sciences visual standards. Creates standardized academic PPT materials with official branding elements. Automatically analyzes folder contents to incorporate local images and generates appropriate PPT structure.
 
 ## Overview
 
-This Skill generates professional HTML presentations following the University of Chinese Academy of Sciences (UCAS) visual standards. When creating academic reports, course presentations, thesis defenses, or research progress updates, use this Skill to produce standardized PPT materials that meet UCAS brand guidelines.
+This Skill generates professional HTML presentations following the University of Chinese Academy of Sciences (UCAS) visual standards. When creating academic reports, course presentations, thesis defenses, or research progress updates, use this Skill to produce standardized PPT materials that meet UCAS brand guidelines. The Skill analyzes folder contents to create appropriate PPT outlines and incorporates local image files.
 
 ## Workflow
 
 When a user requests a UCAS-style presentation, follow these steps:
 
-### Step 1: Gather User Requirements
+### Step 1: Analyze Folder Contents
 
-Collect the following information:
+Scan the current working directory and its subdirectories to:
+- Find CAS_logo.png and UCAS_logo.png for logo placement
+- Identify all image files that could be used in the presentation
+- Understand the context and content structure from available files
+
+**Logo Search Priority**:
+1. Search for `CAS_logo.png` and `UCAS_logo.png` in current directory and subdirectories
+2. If found, use relative paths like `CAS_logo.png` or `subfolder/CAS_logo.png`
+3. If not found, display warning text in SimSun font with red color (#CC0000)
+
+### Step 2: Gather User Requirements and Create Outline
+
+Collect the following information from the user:
 - Presentation title and subtitle (if any)
 - Presenter name and affiliation
 - Presentation content outline (topics, sections)
 - Number of slides or page distribution
 - Key emphasis points (important data, conclusions)
 
-### Step 2: Generate Homepage
+**Create PPT Outline Based On**:
+- User's stated requirements and topics
+- Context from folder contents (e.g., image files suggest certain topics)
+- Standard academic presentation structure
+
+### Step 3: Analyze Images for Context
+
+For each image file found in the folder:
+- Use `images_understand` MCP tool to understand image content if needed
+- Note the image filename and its apparent meaning
+- Determine appropriate slide placement based on image content
+- Match images with relevant PPT sections
+
+### Step 4: Generate Homepage
 
 Create a title slide with the following structure:
 - Left sidebar (32% width) with #18388A background color
-- CAS logo vertically centered in the sidebar
+- CAS logo (or warning text if logo not found) vertically centered in the sidebar
 - Right content area with left-aligned text
 - Main title (48px, Bold, #18388A)
 - Subtitle (26px, Regular, #18388A)
 - Presenter information and date
 
-### Step 3: Generate Content Pages
+**Missing Logo Handling**:
+```html
+<p style="font-family: 'SimSun', '宋体', serif; color: #CC0000; font-size: 14px;">
+    [警告：未找到CAS_logo.png，请将logo文件放入当前目录]
+</p>
+```
+
+### Step 5: Generate Content Pages
 
 For each content page, follow the standard format:
-- UCAS logo at top-right corner
+- UCAS logo (or warning text if logo not found) at top-right corner
 - Page title (32px, Bold, #18388A) with left-border decoration (6px solid #18388A)
 - Left-aligned body content (20px, Regular)
 - Subtitle (22px, Bold, #18388A) for section headers
 - Page number at bottom-right
+- Insert relevant images from folder when appropriate
 
-### Step 4: Apply Emphasis
+**Image Insertion Example**:
+```html
+<div class="image-container">
+    <img src="chart_results.png" alt="实验结果图表">
+    <p class="image-caption">图1：实验结果对比</p>
+</div>
+```
+
+### Step 6: Apply Emphasis and Images
 
 Apply formatting based on content importance:
 - **Red Emphasis (#CC0000)**: Key conclusions, important data, core findings (max 2-3 per page)
 - **Bold Emphasis**: Technical terms, proper nouns, important concepts
 - **Highlight Box**: Red left-border box for critical information
+- **Images**: Insert analyzed images at appropriate positions with captions
 
-### Step 5: Final Review
+### Step 7: Final Review
 
 Verify the presentation meets all UCAS standards:
-- Logo files correctly placed and referenced
-- All text uses Microsoft YaHei font
+- Logo files correctly placed or warning text displayed
+- All text uses appropriate font (Microsoft YaHei or SimSun for warnings)
 - Theme blue #18388A consistently applied
 - Homepage uses asymmetric sidebar layout
 - Content page titles use left-border decoration
+- Images from folder are appropriately placed with captions
 - Red emphasis used sparingly (2-3 per page)
 - All content left-aligned
+
+## Folder Analysis
+
+### Logo Detection Process
+
+1. **Search Locations**:
+   - Current working directory
+   - All subdirectories recursively
+   - Common locations: root, images/, resources/, references/
+
+2. **File Matching**:
+   - Case-insensitive matching for `CAS_logo.png` and `UCAS_logo.png`
+   - Accept exact filename matches
+
+3. **Fallback Behavior**:
+   - If logo not found, display warning message
+   - Warning text uses SimSun font and red color (#CC0000)
+   - Warning message in Chinese: "[警告：未找到logo文件，请将CAS_logo.png放入当前目录]"
+
+### Image Context Analysis
+
+For each image file in the folder:
+1. Use `images_understand` tool to analyze content
+2. Extract relevant information:
+   - What the image depicts
+   - Its relevance to presentation topic
+   - Appropriate caption text
+3. Determine insertion point based on:
+   - Image subject matter
+   - Current PPT section
+   - Logical flow of presentation
 
 ## Design Standards
 
@@ -69,7 +143,7 @@ Verify the presentation meets all UCAS standards:
 | Element | Color Code | Usage |
 |---------|------------|-------|
 | Primary Blue | #18388A | Sidebar background, titles, key elements |
-| Emphasis Red | #CC0000 | Key conclusions, important data, core findings |
+| Emphasis Red | #CC0000 | Key conclusions, important data, warnings |
 | Background | #FFFFFF | Page background |
 | Text | #333333 | Body text content |
 
@@ -83,17 +157,17 @@ Verify the presentation meets all UCAS standards:
 | Subtitle | 22px | Bold | Section sub-headers |
 | Body Text | 20px | Regular | Main content |
 | Page Number | 14px | Regular | Footer page indicator |
+| Warning Text | 14px | Regular | Missing logo warning (SimSun, #CC0000) |
 
 **Font Family**: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', 'Helvetica Neue', sans-serif
+**Warning Font**: 'SimSun', '宋体' (for missing logo warnings)
 
 ### Logo Usage
 
-| Page Type | Logo | Position | Size |
-|-----------|------|----------|------|
-| Homepage | CAS Logo | Left sidebar, vertically centered | 70-80% of sidebar width |
-| Content Pages | UCAS Logo | Top-right corner | ~45px height |
-
-**File Requirements**: PNG format with transparent background
+| Page Type | Logo | Position | Fallback |
+|-----------|------|----------|----------|
+| Homepage | CAS Logo | Left sidebar, vertically centered | SimSun red warning text |
+| Content Pages | UCAS Logo | Top-right corner | SimSun red warning text |
 
 ### Layout Structure
 
@@ -101,12 +175,13 @@ Verify the presentation meets all UCAS standards:
 - Asymmetric two-column layout
 - Left sidebar: 32% width, #18388A background
 - Right content area: 68% width, left-aligned
-- Logo and title in blue sidebar theme
+- Logo (or warning) and title in blue sidebar theme
 
 **Content Page Layout**:
-- UCAS logo at top-right
+- UCAS logo (or warning) at top-right
 - Title with left blue border decoration (6px)
 - Left-aligned body content
+- Images inserted with captions
 - Page number at bottom-right
 
 ### Emphasis Rules
@@ -115,6 +190,7 @@ Verify the presentation meets all UCAS standards:
 |-------|-------|--------|-------|
 | Red Emphasis | #CC0000 | Bold | Key conclusions, important data (max 2-3 per page) |
 | Bold Emphasis | #333333 | Bold | Technical terms, proper nouns, concepts |
+| Warning Text | #CC0000 | Regular | Missing logo notifications (SimSun font) |
 
 ## When to Apply
 
@@ -126,6 +202,7 @@ Apply these guidelines whenever creating:
 - Proposal and final reports
 - Group meeting updates
 - Formal academic presentation occasions
+- Any presentation requiring analysis of local folder contents
 
 ## HTML Template Structure
 
@@ -133,7 +210,12 @@ Apply these guidelines whenever creating:
 ```html
 <div class="slide title-slide">
     <div class="title-sidebar">
-        <img src="references/CAS_logo.png" alt="CAS Logo" class="cas-logo">
+        <!-- Logo found -->
+        <img src="CAS_logo.png" alt="CAS Logo" class="cas-logo">
+        <!-- OR if logo not found -->
+        <p style="font-family: 'SimSun', '宋体'; color: #CC0000; font-size: 14px;">
+            [警告：未找到CAS_logo.png，请将logo文件放入当前目录]
+        </p>
     </div>
     <div class="title-content">
         <h1>Presentation Title</h1>
@@ -145,18 +227,27 @@ Apply these guidelines whenever creating:
 </div>
 ```
 
-### Content Page Layout
+### Content Page with Image
 ```html
 <div class="slide">
-    <img src="references/UCAS_logo.png" alt="UCAS Logo" class="ucas-logo">
+    <!-- Logo or warning -->
+    <img src="UCAS_logo.png" alt="UCAS Logo" class="ucas-logo">
+    <!-- OR -->
+    <p style="font-family: 'SimSun', '宋体'; color: #CC0000; position: absolute; top: 30px; right: 40px; font-size: 12px;">
+        [缺UCAS_logo]
+    </p>
+
     <h2 class="slide-title">Page Title</h2>
     <div class="content">
+        <p>Content paragraph with analysis...</p>
+
+        <!-- Inserted image with caption -->
+        <div class="image-container">
+            <img src="experiment_chart.png" alt="实验结果">
+            <p class="image-caption">图1：实验结果对比图</p>
+        </div>
+
         <p class="emphasis-red">Key point in red</p>
-        <p>Regular content with <span class="emphasis-bold">bold emphasis</span></p>
-        <ul>
-            <li>First point</li>
-            <li>Second point with <span class="emphasis-red">important data</span></li>
-        </ul>
     </div>
     <span class="page-number">1/10</span>
 </div>
@@ -169,6 +260,9 @@ Apply these guidelines whenever creating:
     width: 32%;
     height: 100%;
     background: #18388A;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Content Page Title */
@@ -191,51 +285,72 @@ Apply these guidelines whenever creating:
     font-weight: bold;
     color: #333333;
 }
+
+/* Image Container */
+.image-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.image-container img {
+    max-width: 100%;
+    max-height: 400px;
+}
+
+.image-caption {
+    font-size: 16px;
+    color: #666666;
+    margin-top: 10px;
+}
 ```
 
 ## Usage Examples
 
-### Example 1: Thesis Defense
-User: "Generate a thesis defense PPT titled 'Research on Deep Learning Image Classification' by Zhang San, supervised by Professor Li Si."
+### Example 1: Thesis Defense with Folder Analysis
+User: "Generate a thesis defense PPT. The folder contains experimental data images."
 
-Claude will generate:
-- Homepage with thesis title, author, supervisor
-- Content pages covering: research background, methodology, experiments, results, conclusion
-- Appropriate emphasis on key innovations and results
+Claude will:
+1. Analyze folder to find CAS_logo.png, UCAS_logo.png, and experiment images
+2. Use images_understand to comprehend experiment images
+3. Create outline based on thesis structure and image context
+4. Generate homepage with CAS logo (or warning)
+5. Insert experiment images with appropriate captions on relevant slides
 
-### Example 2: Research Progress
-User: "Create a 10-page research progress report covering: background, methodology, results, issues, and next steps."
+### Example 2: Research Progress with Local Images
+User: "Create a research progress report. We have result charts and diagrams in the project folder."
 
-Claude will generate:
-- Homepage with project title and presenter info
-- 10 content pages distributed across sections
-- Tables for data presentation
-- Highlight boxes for key findings
+Claude will:
+1. Scan folder for logos and research images
+2. Analyze chart images to understand their content
+3. Create presentation outline matching research sections
+4. Insert analyzed charts at appropriate positions
+5. Add captions explaining each figure
 
-### Example 3: Course Presentation
-User: "Generate a 5-page presentation on machine learning basics for a course assignment."
+### Example 3: Missing Logo Scenario
+User: "Generate a presentation but I haven't prepared the logo files yet."
 
-Claude will generate:
-- Homepage with course name and topic
-- 5 content pages covering fundamentals
-- Clear subtitle hierarchy
-- Appropriate use of emphasis
+Claude will:
+1. Search for CAS_logo.png and UCAS_logo.png
+2. Not find them in the folder
+3. Generate presentation with SimSun red warning text
+4. Continue with all other UCAS styling elements
+5. Remind user to add logo files for final version
 
 ## Quick Reference
 
-| User Request | Action |
-|--------------|--------|
-| "Create a thesis defense PPT" | Generate defense presentation with all standard sections |
-| "Make a research report" | Generate research progress presentation with data tables |
-| "Course presentation" | Generate educational presentation with clear structure |
-| "Update existing presentation" | Follow all UCAS standards for consistency |
+| Scenario | Action |
+|----------|--------|
+| "Create thesis defense PPT" | Analyze folder, create outline, generate with logos |
+| "Make report with local images" | Scan images, analyze content, insert appropriately |
+| "No logo files available" | Use SimSun red warning text, continue generation |
+| "Update with new images" | Re-analyze folder, insert at logical positions |
 
-## references
+## Folder Resources
 
-See the references folder for:
-- CAS_logo.png (for homepage sidebar)
-- UCAS_logo.png (for content page headers)
-- template.html (complete reference template)
+This Skill analyzes:
+- Logo files: CAS_logo.png, UCAS_logo.png
+- Content images: Charts, diagrams, photos, screenshots
+- Context files: Any file that suggests presentation topics
 
 ## Notes
 
@@ -243,4 +358,6 @@ See the references folder for:
 - Use browser fullscreen mode (F11) for best presentation experience
 - Print to PDF available via browser print function
 - Ensure logo files are official versions with proper authorization
-- All text should use Microsoft YaHei font for consistency
+- All text should use Microsoft YaHei font (SimSun for warnings)
+- Missing logo warnings use SimSun font in red (#CC0000)
+- Image analysis improves relevance and caption quality
