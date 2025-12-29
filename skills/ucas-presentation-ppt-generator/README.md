@@ -182,22 +182,6 @@ ucas-presentation-ppt-generator/
 └────────────────────────────────────────────────────┘
 ```
 
-## 打包和部署
-
-### 打包说明
-
-1. 确保文件夹名称为`UCAS_presentation_PPT`
-2. 确认logo文件已放入resources文件夹
-3. 压缩整个文件夹为ZIP文件（根目录为UCAS_presentation_PPT文件夹）
-
-### 上传到Claude Code
-
-1. 打开Claude Code设置
-2. 进入Skills管理页面
-3. 点击添加新Skill
-4. 上传ZIP文件
-5. 启用该Skill
-
 ## 常见问题
 
 ### Q1：字体不显示为微软雅黑怎么办？
@@ -210,10 +194,8 @@ ucas-presentation-ppt-generator/
 ### Q2：Logo图片不显示怎么办？
 
 请检查：
-1. Logo文件是否正确放置在resources文件夹
-2. 文件名是否为`CAS_logo.png`和`UCAS_logo.png`
-3. 文件路径是否正确引用
-4. 图片格式是否为PNG且背景透明
+1. Logo图片文件是否正确放置在文件夹
+2. 图片格式是否为PNG且背景透明
 
 ### Q3：如何调整页面颜色和样式？
 
