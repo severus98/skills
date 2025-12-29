@@ -10,7 +10,7 @@
 ucas-presentation-ppt-generator/
 ├── Skill.md              # Claude Code Skills核心配置文件
 ├── README.md             # 使用说明文档
-└── resources/
+└── references/
     ├── CAS_logo.png      # 中国科学院院徽（需用户提供）
     ├── UCAS_logo.png     # 中国科学院大学校徽（需用户提供）
     └── template.html     # 演示模板文件
@@ -20,16 +20,11 @@ ucas-presentation-ppt-generator/
 
 ### 步骤一：准备Logo文件
 
-请将以下两个Logo文件放入resources文件夹中：
+请将以下两个Logo文件放入你的文件夹中：
 
 - **CAS_logo.png**：中国科学院院徽，用于首页左侧蓝色竖幅区域内
 - **UCAS_logo.png**：中国科学院大学校徽，用于内页右上角
 
-建议Logo规格：
-- PNG格式，背景透明
-- CAS_logo.png：宽度占蓝色区域的70-80%
-- UCAS_logo.png：高度约45像素
-- 确保Logo清晰可辨
 
 ### 步骤二：使用Skills生成PPT
 
@@ -241,24 +236,6 @@ ucas-presentation-ppt-generator/
 - `.title-content`：右侧内容区域
 - 调整`width`属性可改变两栏比例
 
-## 注意事项
-
-1. **Logo版权**：请确保使用的Logo文件具有合法授权或为官方版本
-2. **字体兼容**：建议在Windows系统上使用以获得最佳字体效果
-3. **文件大小**：较大的演示文稿可能影响加载速度
-4. **浏览器兼容性**：建议使用Chrome、Edge或Firefox浏览器
-5. **颜色规范**：请使用#18388A作为主题蓝色，以保持品牌一致性
-
-## 版本信息
-
-- 版本：2.0
-- 更新日期：2025年12月
-- 适用平台：Claude Code Skills
-- 主要更新：采用新的设计风格，蓝色主题色#18388A，非对称两栏首页布局
-
-## 联系方式
-
-如有问题或建议，请联系Claude Code支持团队。
 
 ---
 
