@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCAS风格演示文稿</title>
+    <style>
+        /* 基础样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 页面容器 */
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', 'Helvetica Neue', sans-serif;
+        }
+
+        /* 幻灯片通用样式 */
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #FFFFFF;
+            overflow: hidden;
+        }
+
+        /* 首页特殊样式 - 非对称两栏布局 */
+        .slide.title-slide {
+            display: flex;
+            flex-direction: row;
+        }
+
+        /* 首页左侧蓝色竖幅 */
+        .title-sidebar {
+            width: 32%;
+            height: 100%;
+            background: #18388A;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* 首页院徽样式 */
+        .title-sidebar .cas-logo {
+            width: 70%;
+            height: auto;
+            max-width: 200px;
+        }
+
+        /* 首页右侧内容区域 */
+        .title-content {
+            width: 68%;
+            padding: 80px 60px 80px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+        }
+
+        /* 首页主标题 */
+        .title-content h1 {
+            font-size: 48px;
+            font-weight: bold;
+            color: #18388A;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        /* 首页副标题 */
+        .title-content h2 {
+            font-size: 26px;
+            font-weight: normal;
+            color: #18388A;
+            margin-bottom: 60px;
+        }
+
+        /* 首页信息文字 */
+        .title-content p {
+            font-size: 22px;
+            color: #18388A;
+            margin-bottom: 12px;
+        }
+
+        /* 内页校徽样式 */
+        .slide:not(.title-slide) .ucas-logo {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            height: 45px;
+            width: auto;
+        }
+
+        /* 标题样式 - 内容页 */
+        .slide-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #18388A;
+            margin-bottom: 35px;
+            padding-left: 20px;
+            border-left: 6px solid #18388A;
+        }
+
+        /* 二级标题样式 */
+        .subtitle {
+            font-size: 22px;
+            color: #18388A;
+            margin: 25px 0 15px 0;
+            font-weight: bold;
+        }
+
+        /* 正文样式 */
+        .content {
+            font-size: 20px;
+            line-height: 1.8;
+            color: #333333;
+            padding-left: 20px;
+        }
+
+        /* 强调样式 - 红色 */
+        .emphasis-red {
+            color: #CC0000;
+            font-weight: bold;
+        }
+
+        /* 强调样式 - 加粗 */
+        .emphasis-bold {
+            font-weight: bold;
+            color: #333333;
+        }
+
+        /* 列表样式 */
+        .content ul, .content ol {
+            margin-left: 25px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .content li {
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            list-style-type: disc;
+        }
+
+        /* 两栏布局 */
+        .two-column {
+            display: flex;
+            gap: 50px;
+            margin-top: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        /* 图片容器 */
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 350px;
+            border: 1px solid #E0E0E0;
+        }
+
+        .image-caption {
+            font-size: 16px;
+            color: #666666;
+            margin-top: 10px;
+        }
+
+        /* 表格样式 */
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .content th, .content td {
+            border: 1px solid #DDDDDD;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .content th {
+            background: #F5F7FA;
+            color: #18388A;
+            font-weight: bold;
+        }
+
+        /* 页码样式 */
+        .page-number {
+            position: absolute;
+            bottom: 25px;
+            right: 40px;
+            font-size: 14px;
+            color: #666666;
+        }
+
+        /* 导航提示 */
+        .nav-hint {
+            position: absolute;
+            bottom: 25px;
+            left: 40px;
+            font-size: 12px;
+            color: #999999;
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 高亮框 */
+        .highlight-box {
+            background: #FFF8F8;
+            border-left: 4px solid #CC0000;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #18388A;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- 幻灯片1：首页 -->
+        <div class="slide title-slide active">
+            <div class="title-sidebar">
+                <img src="CAS_logo.png" alt="中国科学院院徽" class="cas-logo">
+            </div>
+            <div class="title-content">
+                <h1>演示文稿主标题</h1>
+                <h2>副标题（可选）</h2>
+                <p>汇报人：姓名</p>
+                <p>中国科学院大学 ××学院/实验室</p>
+                <p>2025年12月</p>
+            </div>
+        </div>
+
+        <!-- 幻灯片2：目录 -->
+        <div class="slide">
+            <img src="UCAS_logo.png" alt="中国科学院大学校徽" class="ucas-logo">
+            <h2 class="slide-title">目 录</h2>
+            <div class="content">
+                <ul style="list-style: none; margin-left: 0;">
+                    <li style="margin-bottom: 25px; font-size: 24px;">
+                        <span class="emphasis-red">01</span>
+                        <span style="margin-left: 20px;">研究背景与意义</span>
+                    </li>
+                    <li style="margin-bottom: 25px; font-size: 24px;">
+                        <span class="emphasis-red">02</span>
+                        <span style="margin-left: 20px;">研究方法与技术路线</span>
+                    </li>
+                    <li style="margin-bottom: 25px; font-size: 24px;">
+                        <span class="emphasis-red">03</span>
+                        <span style="margin-left: 20px;">实验结果与分析</span>
+                    </li>
+                    <li style="margin-bottom: 25px; font-size: 24px;">
+                        <span class="emphasis-red">04</span>
+                        <span style="margin-left: 20px;">结论与展望</span>
+                    </li>
+                    <li style="font-size: 24px;">
+                        <span class="emphasis-red">05</span>
+                        <span style="margin-left: 20px;">致谢</span>
+                    </li>
+                </ul>
+            </div>
+            <span class="page-number">2/8</span>
+        </div>
+
+        <!-- 幻灯片3：研究背景 -->
+        <div class="slide">
+            <img src="UCAS_logo.png" alt="中国科学院大学校徽" class="ucas-logo">
+            <h2 class="slide-title">研究背景与意义</h2>
+            <div class="content">
+                <p class="subtitle">研究背景</p>
+                <p style="margin-bottom: 20px;">
+                    近年来，随着<span class="emphasis-bold">人工智能技术</span>的快速发展，相关领域的研究呈现出爆发式增长。根据最新统计数据显示，
+                    <span class="emphasis-red">全球AI市场规模已突破5000亿美元</span>，预计未来五年将保持年均25%以上的增长率。
+                </p>
+                <p class="subtitle">研究意义</p>
+                <ul>
+                    <li>填补领域内<span class="emphasis-bold">理论研究的空白</span>，推动学科发展</li>
+                    <li>为实际应用提供<span class="emphasis-red">可行的技术方案</span>，创造经济价值</li>
+                    <li>培养高水平<span class="emphasis-bold">专业人才</span>，提升国家竞争力</li>
+                </ul>
+            </div>
+            <span class="page-number">3/8</span>
+        </div>
+
+        <!-- 幻灯片4：研究方法 -->
+        <div class="slide">
+            <img src="UCAS_logo.png" alt="中国科学院大学校徽" class="ucas-logo">
+            <h2 class="slide-title">研究方法与技术路线</h2>
+            <div class="content">
+                <p class="subtitle">研究方法</p>
+                <ul>
+                    <li><span class="emphasis-bold">文献调研法</span>：系统梳理国内外相关研究成果</li>
+                    <li><span class="emphasis-bold">实验验证法</span>：设计对照组实验，验证假设成立</li>
+                    <li><span class="emphasis-bold">数据分析法</span>：运用统计方法处理实验数据</li>
+                </ul>
+                <div class="highlight-box">
+                    <p style="color: #CC0000; font-weight: bold;">关键技术突破：</p>
+                    <p>本研究在算法效率方面实现了<span class="emphasis-red">30%以上的性能提升</span>，同时保持了98%以上的准确率。</p>
+                </div>
+                <p class="subtitle">技术路线</p>
+                <p>数据采集 → 数据预处理 → 模型构建 → 实验验证 → 结果分析</p>
+            </div>
+            <span class="page-number">4/8</span>
+        </div>
+
+        <!-- 幻灯片5：实验结果 -->
+        <div class="slide">
+            <img src="UCAS_logo.png" alt="中国科学院大学校徽" class="ucas-logo">
+            <h2 class="slide-title">实验结果与分析</h2>
+            <div class="content">
+                <div class="two-column">
+                    <div class="column">
+                        <p class="subtitle">主要发现</p>
+                        <ul>
+                            <li>实验组表现<span class="emphasis-red">显著优于</span>对照组</li>
+                            <li><span class="emphasis-bold">准确率提升</span>达到预期目标</li>
+                            <li>计算效率有明显改善</li>
+                            <li>鲁棒性测试通过</li>
+                        </ul>
+                    </div>
+                    <div class="column">
+                        <p class="subtitle">数据统计</p>
+                        <table>
+                            <tr>
+                                <th>指标</th>
+                                <th>实验组</th>
+                                <th>对照组</th>
+                            </tr>
+                            <tr>
+                                <td>准确率</td>
+                                <td class="emphasis-red">98.5%</td>
+                                <td>92.3%</td>
+                            </tr>
+                            <tr>
+                                <td>召回率</td>
+                                <td class="emphasis-red">97.2%</td>
+                                <td>89.5%</td>
+                            </tr>
+                            <tr>
+                                <td>F1值</td>
+                                <td class="emphasis-red">0.978</td>
+                                <td>0.908</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <span class="page-number">5/8</span>
+        </div>
+
+        <!-- 幻灯片6：结论与展望 -->
+        <div class="slide">
+            <img src="UCAS_logo.png" alt="中国科学院大学校徽" class="ucas-logo">
+            <h2 class="slide-title">结论与展望</h2>
+            <div class="content">
+                <p class="subtitle">主要结论</p>
+                <ul>
+                    <li>本研究提出的方法在<span class="emphasis-red">多个指标上优于现有方法</span></li>
+                    <li>算法具有良好的<span class="emphasis-bold">可扩展性和实用性</span></li>
+                    <li>为该领域提供了一个<span class="emphasis-bold">新的研究思路</span></li>
+                </ul>
+                <p class="subtitle">未来展望</p>
+                <div class="highlight-box">
+                    <p>未来工作可以在以下方向进行深入：</p>
+                    <p>1. 进一步优化算法，降低计算复杂度</p>
+                    <p>2. 拓展应用场景，验证方法的普适性</p>
+                    <p>3. 结合<span class="emphasis-bold">更多领域知识</span>，提升模型效果</p>
+                </div>
+            </div>
+            <span class="page-number">6/8</span>
+        </div>
+
+        <!-- 幻灯片7：致谢 -->
+        <div class="slide">
+            <img src="UCAS_logo.png" alt="中国科学院大学校徽" class="ucas-logo">
+            <h2 class="slide-title">致 谢</h2>
+            <div class="content" style="text-align: center; margin-top: 80px;">
+                <p style="font-size: 28px; color: #18388A; margin-bottom: 40px;">感谢各位专家和老师的指导！</p>
+                <p style="font-size: 22px; margin-bottom: 20px;">感谢实验室全体成员的支持与帮助</p>
+                <p style="font-size: 20px; color: #666666; margin-top: 60px;">
+                    联系方式：your.email@ucas.ac.cn
+                </p>
+            </div>
+            <span class="page-number">7/8</span>
+        </div>
+
+        <!-- 幻灯片8：结束页 -->
+        <div class="slide title-slide">
+            <div class="title-sidebar">
+                <img src="CAS_logo.png" alt="中国科学院院徽" class="cas-logo">
+            </div>
+            <div class="title-content">
+                <h1 style="font-size: 42px;">感谢聆听</h1>
+                <p style="font-size: 24px; color: #666666; margin-top: 30px;">欢迎批评指正</p>
+            </div>
+            <div style="position: absolute; bottom: 40px; right: 40px;">
+                <p style="font-size: 14px; color: #999999;">按 ← → 键或点击屏幕切换页面</p>
+            </div>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <script>
+        // 幻灯片切换控制
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressBar = document.getElementById('progressBar');
+
+        function updateProgress() {
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        function showSlide(index) {
+            // 隐藏所有幻灯片
+            slides.forEach((slide, i) => {
+                slide.style.display = 'none';
+                slide.classList.remove('fade-in');
+            });
+
+            // 显示当前幻灯片
+            slides[index].style.display = 'flex';
+            slides[index].classList.add('fade-in');
+
+            // 更新页码（首页不显示页码）
+            updateProgress();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                showSlide(currentSlide);
+            }
+        }
+
+        // 键盘控制
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowRight':
+                case 'ArrowDown':
+                case ' ':
+                case 'PageDown':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                case 'ArrowUp':
+                case 'PageUp':
+                    e.preventDefault();
+                    prevSlide();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    goToSlide(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    goToSlide(totalSlides - 1);
+                    break;
+            }
+        });
+
+        // 鼠标点击控制
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        document.addEventListener('click', function(e) {
+            const clickX = e.clientX;
+            const windowWidth = window.innerWidth;
+
+            if (clickX < windowWidth / 3) {
+                prevSlide();
+            } else if (clickX > windowWidth * 2 / 3) {
+                nextSlide();
+            }
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }
+
+        // 初始化
+        showSlide(0);
+    </script>
+</body>
+</html>

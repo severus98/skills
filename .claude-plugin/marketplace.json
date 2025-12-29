@@ -1,0 +1,23 @@
+{
+  "name": "severus98-skills",
+  "owner": {
+    "name": "severus98",
+    "email": "1542221963@qq.com"
+  },
+  "metadata": {
+    "description": "severus98's original skills for prompting academic representation",
+    "version": "1.0.0",
+    "license": "CC BY-NC-SA 4.0"
+  },
+  "plugins": [
+    {
+      "name": "ucas-presentation-ppt-generator",
+      "description": "Generate HTML presentations in University of Chinese Academy of Sciences (UCAS) style with official logos, Microsoft YaHei fonts and proper bold as well as colors",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/ucas-presentation-ppt-generator"
+      ]
+    }
+  ]
+}
