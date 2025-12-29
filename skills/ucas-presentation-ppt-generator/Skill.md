@@ -133,7 +133,7 @@ Apply these guidelines whenever creating:
 ```html
 <div class="slide title-slide">
     <div class="title-sidebar">
-        <img src="resources/CAS_logo.png" alt="CAS Logo" class="cas-logo">
+        <img src="references/CAS_logo.png" alt="CAS Logo" class="cas-logo">
     </div>
     <div class="title-content">
         <h1>Presentation Title</h1>
@@ -148,7 +148,7 @@ Apply these guidelines whenever creating:
 ### Content Page Layout
 ```html
 <div class="slide">
-    <img src="resources/UCAS_logo.png" alt="UCAS Logo" class="ucas-logo">
+    <img src="references/UCAS_logo.png" alt="UCAS Logo" class="ucas-logo">
     <h2 class="slide-title">Page Title</h2>
     <div class="content">
         <p class="emphasis-red">Key point in red</p>
@@ -230,9 +230,9 @@ Claude will generate:
 | "Course presentation" | Generate educational presentation with clear structure |
 | "Update existing presentation" | Follow all UCAS standards for consistency |
 
-## Resources
+## references
 
-See the resources folder for:
+See the references folder for:
 - CAS_logo.png (for homepage sidebar)
 - UCAS_logo.png (for content page headers)
 - template.html (complete reference template)
