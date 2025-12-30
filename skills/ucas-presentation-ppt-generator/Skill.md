@@ -1,7 +1,7 @@
 ---
 name: ucas-presentation-ppt-generator
-author: severus98
 description: Generate HTML presentations in University of Chinese Academy of Sciences (UCAS) style. Analyzes folder contents to create PPT outlines and incorporates local images. Use when creating academic thesis defenses, course presentations, research progress reports, conference presentations, or any formal academic PPT materials requiring UCAS branding.
+author: severus98
 ---
 
 # UCAS Presentation PPT Generator
@@ -255,14 +255,67 @@ Apply these guidelines whenever creating:
 
 ### CSS Key Definitions
 ```css
-/* Homepage Sidebar */
+/* Page Container - 16:9 Aspect Ratio for Printing */
+.presentation-container {
+    width: 100vw;
+    height: 56.25vw; /* 16:9 aspect ratio based on width */
+    max-height: 100vh;
+    max-width: 177.78vh; /* 16:9 aspect ratio based on height */
+    margin: 0 auto;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Microsoft YaHei', '微软雅黑', 'PingFang SC', 'Helvetica Neue', sans-serif;
+    background: #FFFFFF;
+}
+
+/* Slide Base */
+.slide {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #FFFFFF;
+    overflow: hidden;
+}
+
+/* Homepage Sidebar - Full Left Side */
 .title-sidebar {
-    width: 32%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 35%;
     height: 100%;
     background: #18388A;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 40px;
+}
+
+/* CAS Logo - Appropriate Size in Sidebar */
+.title-sidebar .cas-logo {
+    width: 70%;
+    max-width: 200px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Homepage Content Area */
+.title-content {
+    position: absolute;
+    left: 35%;
+    top: 0;
+    width: 65%;
+    height: 100%;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
 }
 
 /* Content Page Title */
@@ -272,6 +325,25 @@ Apply these guidelines whenever creating:
     color: #18388A;
     padding-left: 20px;
     border-left: 6px solid #18388A;
+    margin-bottom: 35px;
+}
+
+/* Content Page Layout */
+.slide .content {
+    padding: 0 80px 60px 80px;
+    font-size: 20px;
+    line-height: 1.8;
+    color: #333333;
+}
+
+/* UCAS Logo - Top Right Corner */
+.slide:not(.title-slide) .ucas-logo {
+    position: absolute;
+    top: 25px;
+    right: 40px;
+    width: 50px;
+    height: auto;
+    object-fit: contain;
 }
 
 /* Red Emphasis */
@@ -288,19 +360,81 @@ Apply these guidelines whenever creating:
 
 /* Image Container */
 .image-container {
-    margin: 20px 0;
+    margin: 30px 0;
+    padding: 20px;
+    background: #F9F9F9;
+    border-radius: 8px;
     text-align: center;
 }
 
 .image-container img {
     max-width: 100%;
-    max-height: 400px;
+    max-height: 350px;
+    object-fit: contain;
 }
 
 .image-caption {
     font-size: 16px;
     color: #666666;
-    margin-top: 10px;
+    margin-top: 12px;
+    text-align: center;
+}
+
+/* Page Number */
+.page-number {
+    position: absolute;
+    bottom: 20px;
+    right: 40px;
+    font-size: 14px;
+    color: #666666;
+}
+
+/* Spacing for Balanced Layout */
+.content p {
+    margin-bottom: 15px;
+}
+
+.content ul, .content ol {
+    margin: 20px 0 20px 30px;
+}
+
+.content li {
+    margin-bottom: 12px;
+}
+
+.content .subtitle {
+    font-size: 22px;
+    font-weight: bold;
+    color: #18388A;
+    margin: 30px 0 15px 0;
+}
+
+/* Highlight Box */
+.highlight-box {
+    background: #FFF8F8;
+    border-left: 4px solid #CC0000;
+    padding: 20px;
+    margin: 25px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+/* Table Styling */
+.content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+}
+
+.content th, .content td {
+    border: 1px solid #DDDDDD;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.content th {
+    background: #F5F7FA;
+    color: #18388A;
+    font-weight: bold;
 }
 ```
 
