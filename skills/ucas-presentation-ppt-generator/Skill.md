@@ -286,20 +286,20 @@ Apply these guidelines whenever creating:
     position: absolute;
     left: 0;
     top: 0;
-    width: 35%;
+    width: 38%;
     height: 100%;
     background: #18388A;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    padding: 60px;
 }
 
-/* CAS Logo - Appropriate Size in Sidebar */
+/* CAS Logo - Full Left Side, Large Size  */
 .title-sidebar .cas-logo {
-    width: 70%;
-    max-width: 200px;
+    width: 80%;
+    max-width: 280px;
     height: auto;
     object-fit: contain;
 }
@@ -307,11 +307,11 @@ Apply these guidelines whenever creating:
 /* Homepage Content Area */
 .title-content {
     position: absolute;
-    left: 35%;
+    left: 38%;
     top: 0;
-    width: 65%;
+    width: 62%;
     height: 100%;
-    padding: 60px 80px;
+    padding: 80px 80px 80px 100px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -336,12 +336,12 @@ Apply these guidelines whenever creating:
     color: #333333;
 }
 
-/* UCAS Logo - Top Right Corner */
+/* UCAS Logo - Top Right Corner,Moderate size*/
 .slide:not(.title-slide) .ucas-logo {
     position: absolute;
-    top: 25px;
-    right: 40px;
-    width: 50px;
+    top: 30px;
+    right: 50px;
+    width: 80px;
     height: auto;
     object-fit: contain;
 }
